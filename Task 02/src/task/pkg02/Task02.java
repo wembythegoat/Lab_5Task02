@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -15,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 //GitHub link: https://github.com/wembythegoat/Lab_5Task02.git
@@ -35,7 +37,7 @@ public class Task02 extends Application{
     @Override
     public void start(Stage stage) {
         double[] subtotal = {0,0};
-        double TAX_RATE = 0.13;
+        double TAX_RATE = 0.15;
         double[] tipPercent = {0,0};
         
         GridPane grid = new GridPane();
@@ -60,7 +62,7 @@ public class Task02 extends Application{
         
         Label appetizer = new Label("Appetizer:");
         ComboBox<String> appetizerBox = new ComboBox<>();
-        grid.add(appetizer, 0, 5);
+        grid.add(appetizer, 4, 0);
         
         Map<String, Double> appetizers = new HashMap<>();
         appetizers.put("Soup", 4.50);
@@ -70,11 +72,11 @@ public class Task02 extends Application{
         appetizers.put("Chips and Slasa", 6.95);
         
         appetizerBox.getItems().addAll(appetizers.keySet());
-        grid.add(appetizerBox, 1, 5);
+        grid.add(appetizerBox, 5, 0);
         
         Label main = new Label("Main Course:");
         ComboBox<String> mainBox = new ComboBox<>();
-        grid.add(main, 0, 10);
+        grid.add(main, 0, 5);
         
         Map<String, Double> mains = new HashMap<>();
         mains.put("Steak", 15.00);
@@ -86,11 +88,11 @@ public class Task02 extends Application{
         mains.put("Fish and Chips", 12.25);
         
         mainBox.getItems().addAll(mains.keySet());
-        grid.add(mainBox, 1, 10);
+        grid.add(mainBox, 1, 5);
         
         Label dessert = new Label("Dessert:");
         ComboBox<String> dessertBox = new ComboBox<>();
-        grid.add(dessert, 0, 15);
+        grid.add(dessert, 4, 5);
         
         Map<String, Double> desserts = new HashMap<>();
         desserts.put("Apple Pie", 5.95);
@@ -100,10 +102,10 @@ public class Task02 extends Application{
         desserts.put("Apple Crisp", 5.98);
         
         dessertBox.getItems().addAll(desserts.keySet());
-        grid.add(dessertBox, 1, 15);
+        grid.add(dessertBox, 5, 5);
         
         Label subtotalLabel = new Label("Subtotal: $0.00");
-        Label taxLabel = new Label("Tax (13%): $0.00");
+        Label taxLabel = new Label("Tax (15%): $0.00");
         Label tipLabel = new Label("Tip: $0.00");
         Label totalLabel = new Label("Total: $0.00");
         
@@ -122,7 +124,7 @@ public class Task02 extends Application{
             double total = subtotal[0] + tax + tip;
             
             subtotalLabel.setText(String.format("Subtotal: $%.2f", subtotal[0]));
-            taxLabel.setText(String.format("Tax (13%%): $%.2f", tax));
+            taxLabel.setText(String.format("Tax (15%%): $%.2f", tax));
             tipLabel.setText(String.format("Tip: $%.2f", tip));
             totalLabel.setText(String.format("Total: $%.2f", total));
         };
@@ -176,8 +178,16 @@ public class Task02 extends Application{
             updateBill.run();
         });
         
+        VBox tipBox = new VBox(5, tipTitle, tipSlider, tipValueLabel);
+        tipBox.setAlignment(Pos.CENTER_LEFT);
+        grid.add(tipBox, 0, 9, 2, 1);
         
-        Scene scene = new Scene(grid, 420, 470);
+        VBox totalsBox = new VBox(10, subtotalLabel, taxLabel, tipLabel, totalLabel, clearButton);
+        totalsBox.setPadding(new Insets(10));
+        grid.add(totalsBox, 0, 10, 2, 1);
+        
+        
+        Scene scene = new Scene(grid, 500, 500);
         stage.setTitle("Restaurant Bill Calculator");
         stage.setScene(scene);
         stage.show();
