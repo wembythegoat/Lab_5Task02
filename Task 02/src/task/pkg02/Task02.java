@@ -10,6 +10,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+//GitHub link: https://github.com/wembythegoat/Lab_5Task02.git
+
 /**
  *
  * @author sinna
