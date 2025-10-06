@@ -50,11 +50,19 @@ public class Lab_5 extends Application {
         listView.getItems().addAll ("Full Decorative", "Beaded", "Pirate Design", "Fringed",
         "Leather", "Plain");
         
+        listView.getSelectionModel().selectedItemProperty().addListener(event ->
+        {
+            String listViewChoice = listView.getSelectionModel().getSelectedItem();
+        });
+        
         Label quantity = new Label("Select Quantity:");
         grid.add(quantity, 5, 0);
         
         ComboBox<Integer> quantityBox = new ComboBox();
         quantityBox.getItems().addAll(1,2,3,4, 5, 6, 7, 8, 9, 10);
+        
+        quantityBox.setValue(1);
+        
         grid.add(quantityBox, 6, 0);
         
         Label size = new Label("Select Size:");
@@ -74,13 +82,44 @@ public class Lab_5 extends Application {
         vbox.setMaxHeight(25);
         grid.add(vbox, 11, 0);
         
+        Label message = new Label();
+        message.setStyle("-fx-font-size: 15px;");
+        pane.setBottom(message);
+        
         Button order = new Button("Place Order");
+        order.setOnAction(event ->{
+            String selectedBag = listView.getSelectionModel().getSelectedItem();
+            Integer quantitySelected = quantityBox.getValue();
+            RadioButton selectedSize = (RadioButton) myToggleGroup.getSelectedToggle();
+            
+            if (selectedBag == null) {
+                message.setText("Select a bag type");
+                return;
+            }
+            
+            if (selectedSize == null) {
+                message.setText("Select a size");
+                return;
+            }
+            
+            String sizeText = selectedSize.getText();
+            message.setText("You ordered" + " " + quantitySelected + " " + sizeText + " " + selectedBag + "bag(s)");
+        });
         grid.add(order, 5, 2);
         
         Button clear = new Button("Clear Selections");
+        
+        clear.setOnAction(event -> {
+            listView.getSelectionModel().clearSelection();
+            quantityBox.setValue(1);
+            myToggleGroup.selectToggle(null);
+            message.setText("");
+        });
+        
         grid.add(clear, 6, 2);
         
         Scene scene = new Scene(pane, 800, 500);
+        stage.setTitle("Bag Order Form");
         stage.setScene(scene);
         stage.show();
     }
